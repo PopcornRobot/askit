@@ -1,4 +1,4 @@
-{% extends "ask_it/base.html" %}
+{% extends "app/base.html" %}
 {% load static %}
 
 {% block body %}
@@ -20,7 +20,7 @@
               <div class="card">
                 <p></p>
                 <div class="card-body">
-                  <form action= "{% url 'ask_it:registration_form' %}?next={% url 'ask_it:registration' %}?next=invalid_input" method="post">
+                  <form action= "{% url 'app:registration_form' %}?next={% url 'app:registration' %}?next=invalid_input" method="post">
                   {% csrf_token %}
                   {% if request.GET.next == "invalid_input" %}
                   <div class="form-group has-danger">

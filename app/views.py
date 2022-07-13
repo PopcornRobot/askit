@@ -61,7 +61,7 @@ def question_delete(request, question_id):
   else:
     HttpResponse('you are not the author') #should not be accessible
 
-  return HttpResponseRedirect(reverse('ask_it:home'))
+  return HttpResponseRedirect(reverse('app:home'))
 
 @login_required
 def reply_delete(request, reply_id):
@@ -92,7 +92,7 @@ def upvote(request, question_id):
       next = request.GET.get('next', '/home')
       return HttpResponseRedirect(next) #returns to current page
   else:
-    return HttpResponseRedirect(reverse('ask_it:ask_login'))
+    return HttpResponseRedirect(reverse('app:ask_login'))
 
 def upvote_reply(request, reply_id):
   user = request.user
@@ -112,7 +112,7 @@ def upvote_reply(request, reply_id):
       next = request.GET.get('next', '/home')
       return HttpResponseRedirect(next)
   else:
-    return HttpResponseRedirect(reverse('ask_it:ask_login'))
+    return HttpResponseRedirect(reverse('app:ask_login'))
 
 @login_required
 def give_cookie(request, receiver_id):
@@ -168,9 +168,9 @@ def ask_login_form(request):
   user = authenticate(request, username=username, password=password)
   if user is not None:
     login(request, user)
-    return HttpResponseRedirect(reverse('ask_it:home'))
+    return HttpResponseRedirect(reverse('app:home'))
   else:
-    return HttpResponseRedirect(reverse('ask_it:ask_login'))
+    return HttpResponseRedirect(reverse('app:ask_login'))
 
 def registration(request):
 
@@ -190,9 +190,9 @@ def registration_form(request):
     new_user=authenticate(request, username=username, password=password)
     login(request, new_user)
 
-    return HttpResponseRedirect(reverse('ask_it:home'))
+    return HttpResponseRedirect(reverse('app:home'))
   else:
-    # return HttpResponseRedirect(reverse('ask_it:registration',['sort=popular']))
+    # return HttpResponseRedirect(reverse('app:registration',['sort=popular']))
     return HttpResponseRedirect(next)
 
   
@@ -215,7 +215,7 @@ def question_form(request):
     posting = Ask_it.objects.create(question=question.strip(), message=message, author=author, image=upload, image_caption=caption)
     upvote = Upvoted.objects.create(user=author, upvoted_questions=posting)
 
-    return HttpResponseRedirect(reverse('ask_it:question_thread' , kwargs={'question_thread_id':posting.id}))
+    return HttpResponseRedirect(reverse('app:question_thread' , kwargs={'question_thread_id':posting.id}))
   else:
     return HttpResponseRedirect(next)
 
@@ -237,7 +237,7 @@ def thread_reply(request,question_thread_id):
     reply = Reply.objects.create(message=message, author=author, parent=parent)
     upvote = Upvoted.objects.create(user=author, upvoted_reply=reply)
   
-    return HttpResponseRedirect(reverse('ask_it:question_thread' , kwargs={'question_thread_id':question_thread_id}))
+    return HttpResponseRedirect(reverse('app:question_thread' , kwargs={'question_thread_id':question_thread_id}))
   else:
     return HttpResponseRedirect(next)
 
@@ -265,10 +265,10 @@ def change_password_form(request):
     u.set_password(new_password)
     u.save()
     logout(request)
-    return HttpResponseRedirect(reverse('ask_it:ask_login'))
+    return HttpResponseRedirect(reverse('app:ask_login'))
   else:
-    return HttpResponseRedirect(reverse('ask_it:change_password'))
+    return HttpResponseRedirect(reverse('app:change_password'))
 
 def ask_logout(request):
     logout(request)
-    return HttpResponseRedirect(reverse('ask_it:home')) 
+    return HttpResponseRedirect(reverse('app:home')) 
